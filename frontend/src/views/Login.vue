@@ -30,7 +30,7 @@ export default {
 
     const handleSubmit = async () => {
       try {
-        const response = await fetch('/login', {
+        const response = await fetch('http://localhost:5000/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ export default {
         if (response.ok) {
           // If authentication succeeds, set isLoggedIn to true in your auth store
           authStore.isLoggedIn = true;
-          router.push('/');
+          router.push('/home');
         } else {
           // If authentication fails, show an error message to the user
           error.value = 'Invalid username or password';
