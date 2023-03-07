@@ -32,6 +32,21 @@ app.get('/clothes', (req, res) => {
                                            
 });
 
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+
+    // Set the Content-Type header to "application/json"
+    res.setHeader('Content-Type', 'application/json');
+
+    // Perform authentication here using the provided username and password
+    if (username === 'admin' && password === '123') {
+        // If authentication succeeds, return a success response
+        res.json({ success: true });
+    } else {
+        // If authentication fails, return an error response
+        res.status(401).json({ error: 'Invalid username or password' });
+    }
+});
 
 
 

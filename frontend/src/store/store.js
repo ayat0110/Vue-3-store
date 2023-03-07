@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import axios from 'axios';
 
 export const useAuthStore = defineStore({
     id: 'auth',
@@ -7,14 +8,22 @@ export const useAuthStore = defineStore({
         username: null,
     }),
     actions: {
-        login(username, password) {
-            // This is where you would check the username and password against your
-            // backend API or some other authentication mechanism
-            if (username === 'admin' && password === 'password') {
-                this.isLoggedIn = true;
-                this.username = username;
-                return true;
-            } else {
+        async login(username, password) {
+            try {
+                const response = await axios.post('/login', {
+                    username: username,
+                    password: password
+                });
+
+                if (response.status === 200 && response.data.success) {
+                    this.isLoggedIn = true;
+                    this.username = username;
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (error) {
+                console.error(error);
                 return false;
             }
         },

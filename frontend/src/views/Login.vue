@@ -16,28 +16,39 @@
 </template>
 
 <script>
-import { useAuthStore } from '../store/store.js';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../store/store.js';
 
 export default {
   setup() {
     const username = ref('');
     const password = ref('');
     const error = ref('');
-    const authStore = useAuthStore();
     const router = useRouter();
+    const authStore = useAuthStore();
 
     const handleSubmit = async () => {
       try {
-        const success = await authStore.login(username.value, password.value);
-        if (success) {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username: username.value, password: password.value }),
+          mode: 'cors'
+        });
+
+        if (response.ok) {
+          // If authentication succeeds, set isLoggedIn to true in your auth store
+          authStore.isLoggedIn = true;
           router.push('/');
         } else {
+          // If authentication fails, show an error message to the user
           error.value = 'Invalid username or password';
         }
       } catch (err) {
-        error.value = 'Invalid username or password';
+        console.error(err);
       }
     };
 
@@ -49,4 +60,5 @@ export default {
     };
   }
 };
+
 </script>

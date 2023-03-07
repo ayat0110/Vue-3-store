@@ -1,7 +1,8 @@
 <template>
   <div>
-    <h1>Hello {{ username }}</h1>
+    <h1 v-if="isLoggedIn">Hello {{ username }}</h1>
     <button @click="logout">Logout</button>
+    <p v-if="!isLoggedIn">Please log in to access this page.</p>
   </div>
 </template>
 
@@ -16,6 +17,7 @@ export default {
     const router = useRouter();
 
     const username = computed(() => authStore.username);
+    const isLoggedIn = computed(() => authStore.isLoggedIn);
 
     const logout = async () => {
       await authStore.logout();
@@ -24,6 +26,7 @@ export default {
 
     return {
       username,
+      isLoggedIn,
       logout
     };
   }
